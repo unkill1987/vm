@@ -1,0 +1,240 @@
+<!-- SPDX-License-Identifier: Apache-2.0 --> 
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperledger Fabric Valkyrie Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+ 
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: black;
+        font-size:20px;
+        padding:10px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+        
+      }
+     
+    
+      #body{
+        margin-left:1%;
+        margin-right:1%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header,#left_header2{
+        margin-left:5;
+        
+        display:inline-block;
+        color:white!important;
+      }
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      th{width:150px;}
+
+     
+      @media (max-width:600px){
+        #left_header2{
+          display:none;
+        }
+      }
+
+      @media (max-width:600px){
+        #label{
+          font-size:18px!important;
+        }
+      }
+    .btn-link,.btn-link:hover{color:white; font-size:25px;margin:0px;padding:0px;}
+    
+
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+     <div class="">
+        <img id="img" style="width:25px; margin-bottom:5px;" src ="white.png">
+        <div id="left_header">VALKYRIE SYSTEM</div>
+        <div id= "left_header2">&nbsp BLOCKCHAIN TRADE</div>
+        <div class="dropdown dropleft float-right">
+        <button  type="button"  class="btn btn-link" data-toggle="dropdown"><i class="fa fa-bars"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Current Trade</a>
+          <a class="dropdown-item" href="http://localhost:8001/history.html">Trade History</a>
+        </div>
+      </div>
+      </div>    </header>
+
+    <div id="body" style="margin-bottom:20px">
+   
+
+ 
+      <div class="form-group">
+        <label style ="margin-left:2px; margin-right:5px; font-size:25px; font-weight:500;" id="label">&nbsp Check Your Trade</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid Contract Id</h5>
+      </div>
+      <div class = "row" style ="margin-right:5px; margin-left:2px;">
+      <div class = "input-group" >
+          <label class="input-group-text" style="border-radius:0px; background:#343a40; color:white;" for="createName">Enter Contract ID :</label>
+          <input class="form-control" style="margin:0px;" id="createName"  placeholder="Contract ID" ng-model="contract_id">
+          <div class="input-group-append">
+          <input id="querySubmit" type="submit" value="Search" class="btn btn-dark btn-sm" ng-click="queryTrade()">
+          </div>
+        </div>
+      </div>
+      </div>
+              
+      <div class = "wrapper"style = "padding-left:10px; padding-right:10px;">
+      <table id="query_trade" class="table" align="center" > 
+        <tr>
+          <th>Importer</th>
+          <td>{{query_trade.importer}}</td>
+          </tr>
+        <tr>        
+          <th>Exporter</th>
+          <td>{{query_trade.exporter}}</td>
+        </tr>
+        <tr>
+          <th>Bank</th>
+          <td>{{query_trade.bank}}</td>
+        </tr>
+        <tr>
+          <th>Shipper</th>
+          <td>{{query_trade.shipper}}</td>
+        </tr>
+        <tr>
+          <th>CI hash</th>
+          <td>{{query_trade.ci_hash}}</td>
+        </tr>
+          <th>LCR hash</th>
+          <td>{{query_trade.lcr_hash}}</td>
+        </tr>
+        <tr>
+          <th>LC hash</th>
+          <td>{{query_trade.lc_hash}}</td>
+        </tr>
+        <tr>
+          <th>SR hash</th>
+          <td>{{query_trade.sr_hash}}</td>
+        </tr>
+        <tr>
+          <th>BL hash</th>
+          <td>{{query_trade.bl_hash}}</td>
+        </tr>
+        <tr>
+          <th>DO hash</th>
+          <td>{{query_trade.do_hash}}</td>
+        </tr>
+
+      
+      </table>
+      
+        
+         <!--
+          <div class="form-group">
+            <label>Record CI</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_CI">Success! Tx ID: {{record_ci}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_CI">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" type="text" placeholder="Contract ID" ng-model="record_ci.id">
+            Enter Exporter: <input class="form-control" type="text" placeholder="Exporter" ng-model="record_ci.exporter">
+            Enter CI hash: <input class="form-control" type="text" placeholder="CI hash" ng-model="record_ci.ci_hash">
+            <input id="recordCI" type="submit" value="Create" class="btn btn-primary" ng-click="recordCI()">
+          </div>
+            
+          <div class="form-group">
+            <label>Record LCR</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_LCR">Success! Tx ID: {{record_lcr}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_LCR">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" name="assetSelect" placeholder="Contract ID" ng-model="record_lcr.id">
+            Enter Importer: <input class="form-control" name="assetSelect" placeholder="Importer" ng-model="record_lcr.importer">
+            Enter LCR hash: <input class="form-control" name="assetSelect" placeholder="LCR hash" ng-model="record_lcr.lcr_hash">
+            <input id="recordLCR" type="submit" value="Record" class="btn btn-primary" ng-click="recordLCR()">
+          </div>
+             
+          <div class="form-group">
+            <label>Record LC</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_LC">Success! Tx ID: {{record_lc}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_LC">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" name="assetSelect" placeholder="Contract ID" ng-model="record_lc.id">
+            Enter Bank: <input class="form-control" name="assetSelect" placeholder="Bank" ng-model="record_lc.bank">
+            Enter LC hash: <input class="form-control" name="assetSelect" placeholder="LC hash" ng-model="record_lc.lc_hash">
+            <input id="recordLC" type="submit" value="Record" class="btn btn-primary" ng-click="recordLC()">
+          </div> 
+       
+          <div class="form-group">
+            <label>Record SR</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_SR">Success! Tx ID: {{record_sr}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_SR">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" name="assetSelect" placeholder="Contract ID" ng-model="record_sr.id">
+            Enter Importer: <input class="form-control" name="assetSelect" placeholder="Exporter" ng-model="record_sr.exporter">
+            Enter SR hash: <input class="form-control" name="assetSelect" placeholder="SR hash" ng-model="record_sr.sr_hash">
+            <input id="recordSR" type="submit" value="Record" class="btn btn-primary" ng-click="recordSR()">
+          </div>
+        
+          <div class="form-group" >
+            <label>Record BL</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_BL">Success! Tx ID: {{record_bl}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_BL">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" name="assetSelect" placeholder="Contract ID" ng-model="record_bl.id">
+            Enter Shipprt: <input class="form-control" name="assetSelect" placeholder="Shipper" ng-model="record_bl.shipper">
+            Enter BL hash: <input class="form-control" name="assetSelect" placeholder="BL hash" ng-model="record_bl.bl_hash">
+            <input id="recordBL" type="submit" value="Record" class="btn btn-primary" ng-click="recordBL()">
+          </div>
+    
+          <div class="form-group" >
+            <label>Record DO</label><br>
+            <h5 style="color:green;margin-bottom:2%" id="success_DO">Success! Tx ID: {{record_do}}</h5>
+            <h5 style="color:red;margin-bottom:2%" id="error_DO">Error: Please enter a valid Trade Id</h5>
+            Enter Contract ID: <input class="form-control" name="assetSelect" placeholder="Contract ID" ng-model="record_do.id">
+            Enter Shipper: <input class="form-control" name="assetSelect" placeholder="Shipper" ng-model="record_do.shipper">
+            Enter DO hash: <input class="form-control" name="assetSelect" placeholder="DO hash" ng-model="record_do.do_hash">
+            <input id="recordDO" type="submit" value="Record" class="btn btn-primary" ng-click="recordDO()">
+          </div>
+         -->
+         
+      </a>
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>
